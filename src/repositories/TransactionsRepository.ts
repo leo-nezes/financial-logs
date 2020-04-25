@@ -24,7 +24,24 @@ class TransactionsRepository {
   }
 
   public getBalance(): Balance {
-    // TODO
+    const balance: Balance = { income: 0, outcome: 0, total: 0 };
+
+    this.transactions.map(transaction => {
+      switch (transaction.type) {
+        case 'income':
+          balance.income += transaction.value;
+          break;
+        case 'outcome':
+          balance.outcome += transaction.value;
+          break;
+        default:
+          break;
+      }
+    });
+
+    balance.total = balance.income - balance.outcome;
+
+    return balance;
   }
 
   public create({ title, value, type }: CreateTransactionDTO): Transaction {
